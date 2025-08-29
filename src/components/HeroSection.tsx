@@ -4,6 +4,15 @@ import { Button } from '@/components/ui/button';
 const HeroSection = () => {
   console.log('HeroSection loading...');
   
+  const handleDownloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/dashboards-and-data-dreams/Alekya_Dakarapu_Resume.pdf';
+    link.download = 'Alekya_Dakarapu_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
   return (
     <section id="home" className="hero-lusion flex items-center justify-center">
       {/* Data visualization elements */}
@@ -79,6 +88,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <Button 
                 size="lg" 
+                onClick={handleDownloadResume}
                 className="px-12 py-6 text-lg font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-full transition-all duration-300 hover:scale-105 animate-glow-pulse"
               >
                 <Download className="mr-3 h-5 w-5" />
