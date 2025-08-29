@@ -41,11 +41,11 @@ const HeroSection = () => {
       </div>
 
       <div className="container-width hero-content">
-        <div className="text-center relative z-10">
+        <div className="text-center">
           <div className="max-w-6xl mx-auto animate-fade-in-up">
-            {/* Minimal tagline - properly aligned */}
-            <div className="mb-8 flex justify-center">
-              <p className="text-muted-foreground text-lg tracking-wider uppercase text-center">
+            {/* Minimal tagline */}
+            <div className="mb-8">
+              <p className="text-muted-foreground text-lg tracking-wider uppercase">
                 Beyond Data — Within Insights
               </p>
             </div>
