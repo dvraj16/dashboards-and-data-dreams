@@ -1,12 +1,14 @@
 import { Download, Mail, Github, Linkedin, BarChart3, TrendingUp, Database, Brain, PieChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Hero3D from './Hero3D';
 
 const HeroSection = () => {
   console.log('HeroSection loading...');
   
   const handleDownloadResume = () => {
+    const basePath = import.meta.env.PROD ? '/dashboards-and-data-dreams' : '';
     const link = document.createElement('a');
-    link.href = '/dashboards-and-data-dreams/Alekya_Dakarapu_Resume.pdf';
+    link.href = `${basePath}/Alekya_Dakarapu_Resume.pdf`;
     link.download = 'Alekya_Dakarapu_Resume.pdf';
     document.body.appendChild(link);
     link.click();
@@ -14,38 +16,15 @@ const HeroSection = () => {
   };
   
   return (
-    <section id="home" className="hero-lusion flex items-center justify-center">
-      {/* Data visualization elements */}
-      <div className="data-element">
-        <div className="w-16 h-16 border-2 border-primary/30 rounded-lg">
-          <BarChart3 size={40} className="text-primary/40 m-2" />
-        </div>
-      </div>
-      <div className="data-element">
-        <div className="w-20 h-20 border border-accent/30 rounded-full flex items-center justify-center">
-          <PieChart size={32} className="text-accent/40" />
-        </div>
-      </div>
-      <div className="data-element">
-        <div className="w-24 h-6 bg-primary/20 rounded-full relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-pulse"></div>
-        </div>
-      </div>
-      <div className="data-element">
-        <div className="w-14 h-14 border-2 border-accent/30 rotate-45">
-          <Database size={24} className="text-accent/40 m-2 -rotate-45" />
-        </div>
-      </div>
-      <div className="data-element">
-        <div className="w-32 h-2 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-full"></div>
-      </div>
+    <section id="home" className="relative hero-lusion flex items-center justify-center min-h-[90vh] overflow-hidden">
+      <Hero3D />
 
       <div className="container-width hero-content">
         <div className="text-center">
           <div className="max-w-6xl mx-auto animate-fade-in-up">
             {/* Minimal tagline */}
             <div className="mb-8">
-              <p className="text-muted-foreground text-lg tracking-wider uppercase">
+              <p className="text-muted-foreground text-lg tracking-wider uppercase mx-auto max-w-2xl">
                 Beyond Data — Within Insights
               </p>
             </div>
