@@ -22,7 +22,16 @@ serve(async (req: Request): Promise<Response> => {
   try {
     console.log("Received contact form submission");
     
-    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+    const apiKey = Deno.env.get("RESEND_API_KEY");
+    if (!apiKey) {
+      console.error("RESEND_API_KEY is missing in Edge Function environment");
+      return new Response(
+        JSON.stringify({ success: false, error: "RESEND_API_KEY not configured" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const resend = new Resend(apiKey);
     const { name, email, message }: ContactEmailRequest = await req.json();
     
     console.log("Form data:", { name, email, message: message.substring(0, 50) + "..." });
@@ -58,13 +67,21 @@ serve(async (req: Request): Promise<Response> => {
       `,
     });
 
+    if ((emailResponse as any)?.error) {
+      console.error("Resend returned an error:", (emailResponse as any).error);
+      return new Response(
+        JSON.stringify({ success: false, error: (emailResponse as any).error?.message || 'Email provider error' }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     console.log("Email sent successfully:", emailResponse);
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: "Email sent successfully",
-        emailId: emailResponse.data?.id 
+        emailId: (emailResponse as any)?.data?.id 
       }),
       {
         status: 200,
