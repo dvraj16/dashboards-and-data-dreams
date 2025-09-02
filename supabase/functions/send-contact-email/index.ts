@@ -1,7 +1,5 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
-
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { Resend } from "npm:resend@4.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,7 +13,7 @@ interface ContactEmailRequest {
   message: string;
 }
 
-const handler = async (req: Request): Promise<Response> => {
+serve(async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -23,11 +21,13 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     console.log("Received contact form submission");
+    
+    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
     const { name, email, message }: ContactEmailRequest = await req.json();
     
     console.log("Form data:", { name, email, message: message.substring(0, 50) + "..." });
 
-    // Send notification email to you
+    // Send notification email
     const emailResponse = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: ["vamsiraj.1617@gmail.com"],
@@ -90,6 +90,4 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   }
-};
-
-serve(handler);
+});
