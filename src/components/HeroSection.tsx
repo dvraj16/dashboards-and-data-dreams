@@ -5,14 +5,32 @@ import Hero3D from './Hero3D';
 const HeroSection = () => {
   console.log('HeroSection loading...');
   
-  const handleDownloadResume = () => {
-    const basePath = import.meta.env.PROD ? '/dashboards-and-data-dreams' : '';
-    const link = document.createElement('a');
-    link.href = `${basePath}/Alekya_Dakarapu_Resume.pdf`;
-    link.download = 'Alekya_Dakarapu_Resume.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadResume = async () => {
+    try {
+      // Get the correct base path for production (GitHub Pages)
+      const basePath = import.meta.env.PROD ? '/dashboards-and-data-dreams' : '';
+      const resumeUrl = `${basePath}/Alekya_Dakarapu_Resume.pdf`;
+      
+      // Check if the file exists first
+      const response = await fetch(resumeUrl, { method: 'HEAD' });
+      if (!response.ok) {
+        throw new Error('Resume file not found');
+      }
+      
+      // Create and trigger download
+      const link = document.createElement('a');
+      link.href = resumeUrl;
+      link.download = 'Alekya_Dakarapu_Resume.pdf';
+      link.target = '_blank'; // Fallback to open in new tab if download fails
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading resume:', error);
+      // Fallback: try to open the PDF directly
+      const basePath = import.meta.env.PROD ? '/dashboards-and-data-dreams' : '';
+      window.open(`${basePath}/Alekya_Dakarapu_Resume.pdf`, '_blank');
+    }
   };
   
   return (
@@ -76,6 +94,7 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 variant="outline"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 className="px-12 py-6 text-lg font-medium border-border hover:bg-accent hover:text-accent-foreground rounded-full transition-all duration-300 hover:scale-105"
               >
                 <Mail className="mr-3 h-5 w-5" />
